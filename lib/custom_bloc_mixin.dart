@@ -49,7 +49,11 @@ mixin CustomBloc {
     final String functionNameKey =
         _getCallbackName(type: T, key: key, callbackName: callbackName);
 
-    if (streamControllerCallbacks.containsKey(callbackName)) {}
+    if (streamControllerCallbacks.containsKey(functionNameKey)) {
+      throw Exception(
+        '$functionNameKey is already added to $streamControllerKey.',
+      );
+    }
 
     final StreamController? streamController =
         streamControllers[streamControllerKey];
