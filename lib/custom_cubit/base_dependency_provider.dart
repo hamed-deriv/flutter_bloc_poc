@@ -35,9 +35,8 @@ abstract class BaseDependencyProvider<E extends BaseEntity> {
   void addCallbackToStreamController(
     Function(dynamic) callback, [
     String? key,
-  ]) {
-    getStreamController(key).listen(callback);
-  }
+  ]) =>
+      getStreamController(key).listen(callback);
 
   BehaviorSubject<E> getStreamResult();
 
