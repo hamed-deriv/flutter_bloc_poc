@@ -21,6 +21,24 @@ abstract class BaseDependencyProvider<E extends BaseEntity> {
     _streamControllers[controllerKey] = streamController;
   }
 
+  BehaviorSubject<T> getStreamController<T>([String? key]) {
+    final String controllerKey = getStreamControllerKey(T, key);
+
+    if (_streamControllers.containsKey(controllerKey) ||
+        _streamControllers[controllerKey] is BehaviorSubject<T>) {
+      throw Exception('Can\'t find Stream controller $controllerKey.');
+    }
+
+    return _streamControllers[controllerKey] as BehaviorSubject<T>;
+  }
+
+  void addCallbackToStreamController(
+    Function(dynamic) callback, [
+    String? key,
+  ]) {
+    getStreamController(key).listen(callback);
+  }
+
   BehaviorSubject<E> getStreamResult();
 
   String getStreamControllerKey(Type type, [String? key]) =>
