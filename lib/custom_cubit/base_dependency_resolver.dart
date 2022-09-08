@@ -5,38 +5,34 @@ import 'package:flutter_bloc_poc/custom_cubit/base_entity.dart';
 abstract class BaseDependencyResolver<E extends BaseEntity> {
   final String _defaultResolverKey = 'DEFAULT_RESOLVER_KEY';
 
-  final Map<String, BehaviorSubject> _streamControllers =
-      <String, BehaviorSubject>{};
+  final Map<String, BehaviorSubject> _stream = <String, BehaviorSubject>{};
 
-  void addStreamController<T>(
-    BehaviorSubject<T> streamController, [
-    String? key,
-  ]) {
-    final String controllerKey = getStreamControllerKey(T, key);
+  void addStream<T>(BehaviorSubject<T> stream, [String? key]) {
+    final String streamKey = getStreamKey(T, key);
 
-    if (_streamControllers.containsKey(controllerKey)) {
-      throw Exception('Stream controller already has $controllerKey.');
+    if (_stream.containsKey(streamKey)) {
+      throw Exception('Stream already has $streamKey.');
     }
 
-    _streamControllers[controllerKey] = streamController;
+    _stream[streamKey] = stream;
   }
 
-  BehaviorSubject<T> getStreamController<T>([String? key]) {
-    final String controllerKey = getStreamControllerKey(T, key);
+  BehaviorSubject<T> getStream<T>([String? key]) {
+    final String streamKey = getStreamKey(T, key);
 
-    if (_streamControllers.containsKey(controllerKey) ||
-        _streamControllers[controllerKey] is BehaviorSubject<T>) {
-      throw Exception('Can\'t find Stream controller $controllerKey.');
+    if (_stream.containsKey(streamKey) ||
+        _stream[streamKey] is BehaviorSubject<T>) {
+      throw Exception('Can\'t find Stream $streamKey.');
     }
 
-    return _streamControllers[controllerKey] as BehaviorSubject<T>;
+    return _stream[streamKey] as BehaviorSubject<T>;
   }
 
   void addCallback(Function(dynamic) callback, [String? key]) =>
-      getStreamController(key).listen(callback);
+      getStream(key).listen(callback);
 
   BehaviorSubject<E> resolve();
 
-  String getStreamControllerKey(Type type, [String? key]) =>
+  String getStreamKey(Type type, [String? key]) =>
       '${(key ?? _defaultResolverKey)}::$type';
 }

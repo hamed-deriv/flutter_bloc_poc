@@ -11,7 +11,7 @@ abstract class BaseCustomCubit<E extends BaseEntity>
     required this.dependencyResolver,
     required CustomState<Equatable> initialState,
   }) : super(initialState) {
-    dependencyResolver.resolve().listen(handler);
+    dependencyResolver.resolve().distinct().listen(handler);
   }
 
   final BaseDependencyResolver<E> dependencyResolver;
