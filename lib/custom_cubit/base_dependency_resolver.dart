@@ -2,8 +2,8 @@ import 'package:rxdart/subjects.dart';
 
 import 'package:flutter_bloc_poc/custom_cubit/base_entity.dart';
 
-abstract class BaseDependencyProvider<E extends BaseEntity> {
-  final String _defaultProviderKey = 'DEFAULT_KEY';
+abstract class BaseDependencyResolver<E extends BaseEntity> {
+  final String _defaultResolverKey = 'DEFAULT_RESOLVER_KEY';
 
   final Map<String, BehaviorSubject> _streamControllers =
       <String, BehaviorSubject>{};
@@ -32,14 +32,11 @@ abstract class BaseDependencyProvider<E extends BaseEntity> {
     return _streamControllers[controllerKey] as BehaviorSubject<T>;
   }
 
-  void addCallbackToStreamController(
-    Function(dynamic) callback, [
-    String? key,
-  ]) =>
+  void addCallback(Function(dynamic) callback, [String? key]) =>
       getStreamController(key).listen(callback);
 
-  BehaviorSubject<E> getStreamResult();
+  BehaviorSubject<E> resolve();
 
   String getStreamControllerKey(Type type, [String? key]) =>
-      '${(key ?? _defaultProviderKey)}::$type';
+      '${(key ?? _defaultResolverKey)}::$type';
 }

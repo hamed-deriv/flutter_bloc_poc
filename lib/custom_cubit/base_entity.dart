@@ -1,3 +1,3 @@
 abstract class BaseEntity {
-  BaseEntity generateEntity();
+  BaseEntity getEntity(List<Object> models);
 }
