@@ -1,0 +1,46 @@
+@startuml
+set namespaceSeparator ::
+
+class "custom_state.dart::CustomState" {
+  +StateStatus status
+  +T? data
+  +String? error
+  +List<Object?> props
+  +String toString()
+}
+
+"custom_state.dart::CustomState" o-- "custom_state.dart::StateStatus"
+
+class "custom_state.dart::StateStatus" {
+  +int index
+  {static} +List<StateStatus> values
+  {static} +StateStatus initial
+  {static} +StateStatus loading
+  {static} +StateStatus success
+  {static} +StateStatus failure
+}
+
+"custom_state.dart::StateStatus" o-- "custom_state.dart::StateStatus"
+
+abstract class "base_custom_cubit.dart::BaseCustomCubit" {
+  +BaseDependencyResolver<E> dependencyResolver
+  +void handler()
+}
+
+"base_custom_cubit.dart::BaseCustomCubit" o-- "base_dependency_resolver.dart::BaseDependencyResolver<E>"
+
+abstract class "base_dependency_resolver.dart::BaseDependencyResolver" {
+  -String _defaultResolverKey
+  -Map<String, BehaviorSubject<dynamic>> _stream
+  +void addStream()
+  +BehaviorSubject<T> getStream()
+  +void addCallback()
+  +BehaviorSubject<E> resolve()
+  +String getStreamKey()
+}
+
+abstract class "base_entity.dart::BaseEntity" {
+  +BaseEntity getEntity()
+}
+
+@enduml
