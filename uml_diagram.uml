@@ -1,7 +1,7 @@
 @startuml
 set namespaceSeparator ::
 
-class "custom_state.dart::CustomState" {
+class "custom_cubit::custom_state.dart::CustomState" {
   +StateStatus status
   +T? data
   +String? error
@@ -9,9 +9,9 @@ class "custom_state.dart::CustomState" {
   +String toString()
 }
 
-"custom_state.dart::CustomState" o-- "custom_state.dart::StateStatus"
+"custom_cubit::custom_state.dart::CustomState" o-- "custom_cubit::custom_state.dart::StateStatus"
 
-class "custom_state.dart::StateStatus" {
+class "custom_cubit::custom_state.dart::StateStatus" {
   +int index
   {static} +List<StateStatus> values
   {static} +StateStatus initial
@@ -20,16 +20,19 @@ class "custom_state.dart::StateStatus" {
   {static} +StateStatus failure
 }
 
-"custom_state.dart::StateStatus" o-- "custom_state.dart::StateStatus"
+"custom_cubit::custom_state.dart::StateStatus" o-- "custom_cubit::custom_state.dart::StateStatus"
 
-abstract class "base_custom_cubit.dart::BaseCustomCubit" {
+abstract class "custom_cubit::base_custom_cubit.dart::BaseCustomCubit" {
+  +BaseCustomService service
   +BaseDependencyResolver<E> dependencyResolver
   +void handler()
 }
 
-"base_custom_cubit.dart::BaseCustomCubit" o-- "base_dependency_resolver.dart::BaseDependencyResolver<E>"
+"custom_cubit::base_custom_cubit.dart::BaseCustomCubit" o-- "custom_cubit::base_custom_service.dart::BaseCustomService"
+"custom_cubit::base_custom_cubit.dart::BaseCustomCubit" o-- "custom_cubit::base_dependency_resolver.dart::BaseDependencyResolver<E>"
+"bloc::src::cubit.dart::Cubit" <|-- "custom_cubit::base_custom_cubit.dart::BaseCustomCubit"
 
-abstract class "base_dependency_resolver.dart::BaseDependencyResolver" {
+abstract class "custom_cubit::base_dependency_resolver.dart::BaseDependencyResolver" {
   -String _defaultResolverKey
   -Map<String, BehaviorSubject<dynamic>> _stream
   +void addStream()
@@ -39,8 +42,10 @@ abstract class "base_dependency_resolver.dart::BaseDependencyResolver" {
   +String getStreamKey()
 }
 
-abstract class "base_entity.dart::BaseEntity" {
-  +BaseEntity getEntity()
+abstract class "custom_cubit::base_custom_service.dart::BaseCustomService" {
+}
+
+abstract class "custom_cubit::base_entity.dart::BaseEntity" {
 }
 
 @enduml

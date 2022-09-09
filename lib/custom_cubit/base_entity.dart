@@ -1,3 +1,3 @@
 abstract class BaseEntity {
-  BaseEntity getEntity(List<Object> models);
+  BaseEntity getEntity(Map<String, dynamic> combinedData);
 }
