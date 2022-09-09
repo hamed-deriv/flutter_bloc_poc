@@ -1,6 +1,10 @@
 # flutter_bloc_poc
 
-A new Flutter project.
+Bloc dependency manager poc.
+
+### UML Diagram
+
+![](uml_diagram.png)
 
 ## Getting Started
 
