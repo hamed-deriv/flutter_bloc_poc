@@ -8,7 +8,7 @@ abstract class BaseDependencyResolver<E extends BaseEntity> {
   final Map<String, BehaviorSubject> _stream = <String, BehaviorSubject>{};
 
   void addStream<T>(BehaviorSubject<T> stream, [String? key]) {
-    final String streamKey = getStreamKey(T, key);
+    final String streamKey = getStreamKey<T>(key);
 
     if (_stream.containsKey(streamKey)) {
       throw Exception('Stream already has $streamKey.');
@@ -18,7 +18,7 @@ abstract class BaseDependencyResolver<E extends BaseEntity> {
   }
 
   BehaviorSubject<T> getStream<T>([String? key]) {
-    final String streamKey = getStreamKey(T, key);
+    final String streamKey = getStreamKey<T>(key);
 
     if (_stream.containsKey(streamKey) ||
         _stream[streamKey] is BehaviorSubject<T>) {
@@ -33,6 +33,6 @@ abstract class BaseDependencyResolver<E extends BaseEntity> {
 
   BehaviorSubject<E> resolve();
 
-  String getStreamKey(Type type, [String? key]) =>
-      '${(key ?? _defaultResolverKey)}::$type';
+  String getStreamKey<T>([String? key]) =>
+      '${(key ?? _defaultResolverKey)}::$T';
 }
